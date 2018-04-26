@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Todo List</title>
+	</head>
+	<body>
+		<h1>Todo List</h1>
+		<ul>
+			<% todoList.forEach(function(todo, index) { %>
+				<li><a href="/todo/delete/<% index %>">✘</a> <% todo %></li>
+			<% }); %>
+		</ul>
+		<form action="/todo/add">
+			<p>
+				<label for="newtodo">New Todo : </label>
+				<input type="text" name="newTodo" id="newTodo" autofocus>
+				<input type="submit" />
+			</p>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Todo List</title>
+		<style>
+			.todoDel:hover {
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Todo List</h1>
+		<form action="/todo" method="post" id="todoAdd">
+			<label for="newTodo">Nouvelle action : </label>
+			<input type="text" name="newTodo" id="newTodo" autofocus size=50 />
+			<input type="submit" />
+		</form>
+		<section id="todoList">
+			<% todoList.forEach(function(todo) { %>
+				<p><span class="todoDel">✘ </span><%= todo %></p>
+			<% }); %>
+		</section>
+		
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			/* Reception des messages serveur */
+			var socket = io.connect('http://localhost:8080');
+			
+			socket.on('todo_add', function(todo) {
+				todoAdd(todo);
+			});
+			
+			socket.on('todo_delete', function(index) {
+				todoDelete(index);
+			});
+			
+			/* Evenements sur client */
+			$('#todoAdd').submit(function () {
+				var todo = $('#newTodo').val();
+				if (todo != '') {
+					socket.emit('todo_add', todo);
+					todoAdd(todo);
+					$('#newTodo').val('').focus();
+				}
+				return false;
+			});
+			$('.todoDel').each(function() {
+				$(this).click(function () {
+					var index = $('.todoDel').index($(this));
+					socket.emit('todo_delete', index);
+					todoDelete(index);
+				});
+			});
+			
+			/* Actions sur client */
+			function todoAdd(todo) {
+				$('#todoList').append('<p><span class="todoDel">✘ </span>' + todo + '</p>');
+				$('.todoDel').last().click(function() {
+					var index = $('.todoDel').index($(this));
+					socket.emit('todo_delete', index);
+					todoDelete(index);
+				});
+			}
+			function todoDelete(index) {
+				$('#todoList').find('p').eq(index).remove();
+			}
+		</script>
+	</body>
+</html>

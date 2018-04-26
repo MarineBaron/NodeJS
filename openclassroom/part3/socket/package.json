@@ -1,0 +1,11 @@
+{
+    "name": "socket",
+    "version": "0.1.0",
+    "dependencies": {
+        "express": "~4.16",
+        "ejs": "~2.5",
+        "socket.io": "~2.1"
+    },
+    "author": "Marine Baron",
+    "description": "Socket"
+}

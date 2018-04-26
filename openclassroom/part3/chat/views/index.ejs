@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8' />
+		<title>Chat</title>
+	</head>
+	<body>
+		<h1>Super Chat</h1>
+		<section>
+			<form action="/" method="post" id="chat-form">
+				<input type="text" name="message" id="message" placeholder="Votre message..." size=50 autofocus/>
+				<input type="submit">
+			</form>
+		</section>
+		<section id="chat">
+		</section>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			var socket = io.connect('http://127.0.0.1:3000');
+			var pseudo = '';
+			while (pseudo == '') {
+				pseudo = prompt("What's your pseudo ?");
+			}
+			socket.emit('new_client', pseudo);
+			document.title = pseudo + ' - ' + document.title;
+			
+			socket.on('message', function(data) {
+				putMessage(data.pseudo, data.message);
+			});
+			
+			socket.on('new_client', function(pseudo) {
+				putClient(pseudo);
+			});
+			
+			$('#chat-form').submit(function () {
+				var message = $('#message').val();
+				if (message != '') {
+					socket.emit('message', message);
+					putMessage(pseudo, message);
+					$('#message').val('').focus();
+				}
+				return false;
+			});
+			function putMessage(pseudo, message) {
+				$('#chat').prepend('<p><strong>' + pseudo + '</strong> : ' + message + '</p>');
+			}
+			function putClient(pseudo) {
+				$('#chat').prepend('<p><em>' + pseudo + ' a rejoint le chat</em></p>');
+			}
+		</script>
+	</body>
+</html>

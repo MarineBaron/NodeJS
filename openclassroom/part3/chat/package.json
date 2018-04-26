@@ -1,0 +1,14 @@
+{
+    "name": "chat",
+    "version": "0.1.0",
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "cookie-session": "^2.0.0-beta.3",
+        "ejs": "^2.5.9",
+        "ent": "^2.2.0",
+        "express": "^4.16.3",
+        "socket.io": "^2.1.0"
+    },
+    "author": "Marine Baron",
+    "description": "Chat"
+}

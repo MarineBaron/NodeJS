@@ -1,0 +1,12 @@
+{
+    "name": "todolist",
+    "version": "0.1.0",
+    "dependencies": {
+        "express": "",
+        "ejs": "",
+        "body-parser": "",
+        "cookie-session": ""
+    },
+    "author": "Marine Baron",
+    "description": "Todolist"
+}
